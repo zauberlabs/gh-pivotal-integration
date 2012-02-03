@@ -11,9 +11,19 @@ group :development do
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.8.3"
   gem "simplecov", "~> 0.5.4"
+  gem "pry"
 end
 
 group :default do
   gem "octokit", "~> 0.6.5"
   gem "nokogiri", "~> 1.4.7"
+  gem "sinatra", "~> 1.2.8"
+  gem "rack", "~> 1.4.1"
+end
+
+# yo dawg, i herd u lieked jeweler
+group :xzibit do
+  # steal a page from bundler's gemspec:
+  # add this directory as jeweler, in order to bundle exec jeweler and use the current working directory
+  gem 'github-issues-pivotal-integration', :path => '.'
 end

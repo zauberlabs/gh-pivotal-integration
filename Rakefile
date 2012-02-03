@@ -14,7 +14,7 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "github-issues-pivotal-integration"
+  gem.name = "gh-pivotal"
   gem.homepage = "http://github.com/ignaciodm/github-issues-pivotal-integration"
   gem.license = "MIT"
   gem.summary = %Q{TODO: one-line summary of your gem}
@@ -33,7 +33,6 @@ end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
 end
 
 task :default => :spec
@@ -43,7 +42,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "github-issues-pivotal-integration #{version}"
+  rdoc.title = "gh-pivotal #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
