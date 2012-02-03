@@ -12,12 +12,12 @@ def issues(client, reponame)
   issues.flatten
 end
 
-def to_xml(issues) 
+def to_xml(issues, reponame) 
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.external_stories(:type => "array") {
       issues.each do |issue|
         xml.external_story {
-          xml.external_id issue["id"]
+          xml.external_id "#{reponame}/issues/#{issue["number"]}"
           xml.name issue["title"]
           xml.description issue["description"]
           xml.requested_by issue["user"]["login"]
@@ -36,6 +36,6 @@ ghcli = Octokit::Client.new :login => "mcortesi" , :password => "m1234567"
 
 get '/issues/:account/:reponame' do
   fullname = "#{params[:account]}/#{params[:reponame]}"
-  to_xml(issues(ghcli, fullname))
+  to_xml(issues(ghcli, fullname), fullname)
 end
 
