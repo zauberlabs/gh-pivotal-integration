@@ -1,7 +1,16 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "GithubIssuesPivotalIntegration" do
-  it "fails" do
-    fail "hey buddy, you should probably rename this file and start specing for real"
-  end
+require "mocha"
+require "ostruct"
+
+describe "GithubAdapter" do
+
+	before :each  do 
+    @client = double()
+    @github = GithubAdapter.new(@client)
+    end
+
+    describe "list_issues" do
+    end
+
 end
