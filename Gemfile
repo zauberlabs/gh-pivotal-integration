@@ -23,7 +23,5 @@ end
 
 # yo dawg, i herd u lieked jeweler
 group :xzibit do
-  # steal a page from bundler's gemspec:
-  # add this directory as jeweler, in order to bundle exec jeweler and use the current working directory
-  gem 'github-issues-pivotal-integration', :path => '.'
+  gem 'gh-pivotal', :path => '.'
 end

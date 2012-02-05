@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    github-issues-pivotal-integration (0.0.0)
+    gh-pivotal (0.0.0)
       nokogiri (~> 1.4.7)
       octokit (~> 0.6.5)
       sinatra (~> 1.2.8)
@@ -67,7 +67,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.0.0)
-  github-issues-pivotal-integration!
+  gh-pivotal!
   jeweler (~> 1.8.3)
   nokogiri (~> 1.4.7)
   octokit (~> 0.6.5)
