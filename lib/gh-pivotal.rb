@@ -2,10 +2,10 @@ require 'octokit'
 require 'sinatra'
 
 configure do
-  set :gh_user, "mcortesi"
-  set :gh_password, "password here"
-  set :basic_user, 'admin'
-  set :basic_password, 'zauberlabs'
+  set :gh_user, ENV["GH_USER"] || "your_user"
+  set :gh_password, ENV["GH_PASSWORD"] || "your_password"
+  set :basic_user, ENV["BASIC_USER"] || "admin"
+  set :basic_password, ENV["BASIC_PASSWORD"] || "your_password"
 end
 
 
