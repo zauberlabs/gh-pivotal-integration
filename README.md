@@ -38,6 +38,7 @@ define the variables by command line.
     export GH_PASSWORD="mygithubpassword"
     export BASIC_USER="admin"
     export BASIC_PASSWORD="password"
+```
 
 And just run it with rack or whatever rack server you want.
 
@@ -63,13 +64,14 @@ Also, we recommend you add the ssl module (you don't want anyone peeking at your
 Finally, to configure the applciation on pivotal tracker.
 
 Supposing that:
+
  * the application deployed at `https://my.domain.com/gh-pivotal/`.
  * the github project lives at `https://github.com/myaccount/reponame`
 
 Go to your pivotal tracker project and:
 
  1. select `Project->Configure Integrations`
- 2. On *External Tool Integrations* select the option *Other*
+ 2. On `External Tool Integrations` select the option `Other`
  3. Fill the form with:
     * **Name**: Whatever you want (eg. Github Issues)
     * **Basic Auth Username**: what you configured
