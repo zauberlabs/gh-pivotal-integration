@@ -1,5 +1,6 @@
 require 'octokit'
 require 'sinatra'
+require 'nokogiri'
 
 configure do
   set :gh_user, ENV["GH_USER"] || "your_user"
@@ -32,4 +33,25 @@ get '/issues/*' do |reponame|
   @reponame = reponame
   @issues = fetch_issues reponame
   nokogiri :issues
+end
+
+post '/issues' do
+  #doc = XmlSimple.xml_in(request.body.read)
+  #stories = doc['stories'].first["story"].first
+  #current_state = stories["current_state"].first
+  #if current_state.eql?"finished" then
+  #  issue_uri = stories["other_id"].first.split('/issues/')
+  #  issue_base_path = issue_uri[0]
+  #  issue_number = issue_uri[1]
+  #  $ghcli.close_issue(issue_base_path, issue_number)
+  #end
+
+  doc = Nokogiri::XML(request.body.read)
+  current_state = doc.xpath('//current_state').text
+  if (current_state.eql? "finished") then
+    issue_uri = doc.xpath('//other_id').text.split("/issues/")
+    issue_base_path = issue_uri[0]
+    issue_number = issue_uri[1]
+    $ghcli.close_issue(issue_base_path, issue_number)
+  end
 end
