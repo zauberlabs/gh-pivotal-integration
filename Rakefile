@@ -1,7 +1,7 @@
 # encoding: utf-8
-
 require 'rubygems'
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -9,6 +9,8 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
+
+
 require 'rake'
 
 require 'jeweler'
@@ -25,15 +27,21 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rspec/core'
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
+desc "Run specs"
+RSpec::Core::RakeTask.new(:specs) do |t|
+  t.pattern = "spec/**/*_spec.rb" # don't need this, it's default.
+  t.verbose = true
+  t.ruby_opts = '-Iapp'
+  ENV['RACK_ENV'] = "test"
 end
+
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
 end
+
+
 
 task :default => :spec
 
@@ -46,3 +54,5 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+
