@@ -3,10 +3,10 @@ require 'sinatra'
 require 'nokogiri'
 
 configure do
-  set :gh_user, ENV["GH_USER"] || "your_user"
-  set :gh_password, ENV["GH_PASSWORD"] || "your_password"
+  set :gh_user, ENV["GH_USER"] || "admin"
+  set :gh_password, ENV["GH_PASSWORD"] || "admin"
   set :basic_user, ENV["BASIC_USER"] || "admin"
-  set :basic_password, ENV["BASIC_PASSWORD"] || "your_password"
+  set :basic_password, ENV["BASIC_PASSWORD"] || "admin"
 end
 
 
@@ -48,7 +48,7 @@ post '/issues' do
 
   doc = Nokogiri::XML(request.body.read)
   current_state = doc.xpath('//current_state').text
-  if (current_state.eql? "finished") then
+  if (current_state  == "finished") then
     issue_uri = doc.xpath('//other_id').text.split("/issues/")
     issue_base_path = issue_uri[0]
     issue_number = issue_uri[1]
