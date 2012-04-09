@@ -9,11 +9,6 @@ configure do
   set :basic_password, ENV["BASIC_PASSWORD"] || "admin"
 end
 
-
-use Rack::Auth::Basic, "Restricted Area" do |username, password|
-  [username, password] == [settings.basic_user, settings.basic_password]
-end
-
 $ghcli = Octokit::Client.new :login => settings.gh_user , :password => settings.gh_password
 
 helpers do
@@ -37,10 +32,23 @@ helpers do
     $ghcli.close_issue(issue_base_path, issue_number)
   end
   
+  def protected!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+  
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? && @auth.basic? && @auth.credentials == [settings.basic_user, settings.basic_password]
+  end
+  
 end
 
 # Sinatra Routes
 get '/issues/*' do |reponame|
+  protected!
   @reponame = reponame
   @issues = fetch_issues reponame
   nokogiri :issues
