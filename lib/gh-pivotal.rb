@@ -26,6 +26,17 @@ helpers do
     end until issues[-1].length != 10
     issues.flatten
   end
+  
+  def close_issue(issue_xml)
+    issue_uri = issue_xml.xpath('//other_id').text.split("/issues/")
+    
+    return if issue_uri.nil?
+    
+    issue_base_path = issue_uri[0]
+    issue_number = issue_uri[1]
+    $ghcli.close_issue(issue_base_path, issue_number)
+  end
+  
 end
 
 # Sinatra Routes
@@ -45,13 +56,9 @@ post '/issues' do
   #  issue_number = issue_uri[1]
   #  $ghcli.close_issue(issue_base_path, issue_number)
   #end
-
   doc = Nokogiri::XML(request.body.read)
   current_state = doc.xpath('//current_state').text
-  if (current_state  == "finished") then
-    issue_uri = doc.xpath('//other_id').text.split("/issues/")
-    issue_base_path = issue_uri[0]
-    issue_number = issue_uri[1]
-    $ghcli.close_issue(issue_base_path, issue_number)
+  if current_state  == "finished" then
+    close_issue(doc)
   end
 end
