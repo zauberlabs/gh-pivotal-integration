@@ -18,7 +18,7 @@ helpers do
     begin
       issues << $ghcli.list_issues( reponame, :page => page, :state => :open )
       page += 1
-    end until issues[-1].length != 10
+    end until issues[-1].length == 0
     issues.flatten
   end
   
