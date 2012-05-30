@@ -6,7 +6,7 @@ It's a simple Sinatra application that
 
 * retrieves GitHub Issues from your project and formats them for Pivotal Tracker's import panel (see [xml format](http://www.pivotaltracker.com/help/integrations?version=v3#other)), and
 
-* automatically makes GitHub Issues as closed when you accept your Piovotal Tracker story.
+* automatically marks GitHub Issues as closed when you accept your Piovotal Tracker story.
 
 # Installing gh-pivotal-integration
 
