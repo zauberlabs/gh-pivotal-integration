@@ -55,18 +55,9 @@ get '/issues/*' do |reponame|
 end
 
 post '/issues' do
-  #doc = XmlSimple.xml_in(request.body.read)
-  #stories = doc['stories'].first["story"].first
-  #current_state = stories["current_state"].first
-  #if current_state.eql?"finished" then
-  #  issue_uri = stories["other_id"].first.split('/issues/')
-  #  issue_base_path = issue_uri[0]
-  #  issue_number = issue_uri[1]
-  #  $ghcli.close_issue(issue_base_path, issue_number)
-  #end
   doc = Nokogiri::XML(request.body.read)
   current_state = doc.xpath('//current_state').text
-  if current_state  == "finished" then
+  if current_state  == "accepted" then
     close_issue(doc)
   end
 end
