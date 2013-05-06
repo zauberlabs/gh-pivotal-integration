@@ -7,7 +7,7 @@ xml.external_stories(:type => "array") do
       xml.requested_by issue["user"]["login"]
       xml.created_at(issue["created_at"], :type => "datetime")
       xml.story_type "bug"
-      xml.estimate 0
+      xml.estimate(0, :type => "float")
     end
   end
 end
