@@ -12,11 +12,15 @@ end
 $ghcli = Octokit::Client.new :login => settings.gh_user , :password => settings.gh_password
 
 helpers do
-  def fetch_issues(reponame)
+  def fetch_issues(reponame, labels)
     issues = []
     page = 0
     begin
-      issues << $ghcli.list_issues( reponame, :page => page, :state => :open )
+      if not labels.nil?
+        issues << $ghcli.list_issues( reponame, :page => page, :state => :open, :labels => labels)
+      else
+        issues << $ghcli.list_issues( reponame, :page => page, :state => :open )
+      end
       page += 1
     end until issues[-1].length != 10
     issues.flatten
@@ -50,7 +54,7 @@ end
 get '/issues/*' do |reponame|
   protected!
   @reponame = reponame
-  @issues = fetch_issues reponame
+  @issues = fetch_issues reponame, params['labels']
   nokogiri :issues
 end
 

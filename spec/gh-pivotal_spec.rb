@@ -96,5 +96,19 @@ describe "Integration" do
 </external_stories>
 xml
     end
+
+    it "accepts labels as parameter" do
+      $ghcli.should_receive(:list_issues).with('zauberlabs/zauber-crono', hash_including(:labels => 'CRITIC,HIGH')) {
+        [{'title' => 'Todo mal',
+          'number' => 1,
+          'user' => { 'login' => 'admin'},
+          'created_at' => '2012-03-30T22:00:56Z',
+          'description' => 'No anda nada'
+         }]
+      }
+
+      get "/issues/zauberlabs/zauber-crono?labels=CRITIC,HIGH"
+      last_response.ok?.should be_true
+    end
   end
 end
