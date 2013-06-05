@@ -81,6 +81,12 @@ Go to your pivotal tracker project and:
 
 And you're done. Start importing issues by selecting `More->The name you used`.
 
+### Labels support
+
+You can provide the `labels` parameter with a comma separated list of labels to filter the issues that have certain labels. For example:
+ * **Import API URL**: https://my.domain.com/gh-pivotal/issues/myaccount/reponame?labels=critic,ui
+
+
 ## Contributing to github-issues-pivotal-integration
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
