@@ -17,8 +17,8 @@ describe "Integration" do
     authorize('admin', 'admin')
   end
   
-  describe  "Pivotal-Github integration" do
-    it "closes issue when it has finished" do
+  describe "Pivotal-Github integration" do
+    it "closes issue when it is accepted" do
       $ghcli.should_receive('close_issue') {}
       post "/issues", <<-xml
       <activity>
@@ -34,7 +34,7 @@ describe "Integration" do
             <id type="integer">109</id>
             <url>https:///projects/26/stories/109</url>
             <accepted_at type="datetime">2009/12/14 22:12:09 UTC</accepted_at>
-            <current_state>finished</current_state>
+            <current_state>accepted</current_state>
           </story>
         </stories>
       </activity>
@@ -42,7 +42,7 @@ describe "Integration" do
       last_response.ok?.should be_true 
     end
     
-    it "ignores unfinished issues" do
+    it "ignores un-accepted issues" do
          post "/issues", <<-xml
          <activity>
            <id type="integer">1031</id>
@@ -57,7 +57,7 @@ describe "Integration" do
                <id type="integer">109</id>
                <url>https:///projects/26/stories/109</url>
                <accepted_at type="datetime">2009/12/14 22:12:09 UTC</accepted_at>
-               <current_state>accepted</current_state>
+               <current_state>finished</current_state>
              </story>
            </stories>
          </activity>
@@ -78,7 +78,7 @@ describe "Integration" do
             'number' => 1,
             'user' => { 'login' => 'admin'},
             'created_at' => '2012-03-30T22:00:56Z',
-            'description' => 'No anda nada'
+            'body' => 'No anda nada'
            }]
         else
           []
@@ -98,7 +98,7 @@ describe "Integration" do
     <requested_by>admin</requested_by>
     <created_at type="datetime">2012-03-30T22:00:56Z</created_at>
     <story_type>bug</story_type>
-    <estimate>0</estimate>
+    <estimate type="integer">0</estimate>
   </external_story>
 </external_stories>
 xml
@@ -113,7 +113,7 @@ xml
             'number' => 1,
             'user' => { 'login' => 'admin'},
             'created_at' => '2012-03-30T22:00:56Z',
-            'description' => 'No anda nada'
+            'body' => 'No anda nada'
            }]
         else
           []

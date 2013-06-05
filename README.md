@@ -1,37 +1,29 @@
 # Introduction
 
-Simple Web Application that provides Github Issues integration to Pivotal Tracker.
+gh-pivotal-integration integrates GitHub Issues with your Pivotal Tracker backlog.
 
-It's a simple sinatra application that lets you retrieve the github issues from your organization projects in the XML format requested by Pivotal Tracker (see the [documentation](http://www.pivotaltracker.com/help/integrations?version=v3#other))
+It's a simple Sinatra application that
 
-The application is intended to work with all projects a github user can access. You just provide your credentials, and the application lets you import issues from whichever repositories you want.
+* retrieves GitHub Issues from your project and formats them for Pivotal Tracker's import panel (see [xml format](http://www.pivotaltracker.com/help/integrations?version=v3#other)), and
 
-# Running the Application
+* automatically marks GitHub Issues as closed when you accept your Piovotal Tracker story.
 
-## Download Code
+# Installing gh-pivotal-integration
 
-Just clone the repository
+Pick a username, `BASIC_USER`, and password, `BASIC_PASSWORD`, to secure your instance of gh-pivotal-integration. Choose wisely. You need these for installing gh-pivotal-integration and configuring the Pivotal Tracker integration.
 
-```bash
-    git clone https://github.com/zauberlabs/gh-pivotal-integration.git
-```
+## Deploy Option #1: Local
 
-## Local Deploy
-
-You need to obtain the depencies, if you don't have *bundler*, install it
+Install dependencies:
 
 ```bash
-    gem install bundler
-```
-
-Get the dependencies
-
-```bash
+    git clone https://github.com/ThreadSuite/gh-pivotal-integration.git
+    cd gh-pivotal-integration
+    gem install bundler  # if not already installed
     bundle install
 ```
 
-Set up the environment variables to use the application, you may modify your `.bashrc` or
-define the variables by command line.
+Set these environment variables in your shell or `.bashrc`:
 
 ```bash
     export GH_USER="myuser"
@@ -40,54 +32,67 @@ define the variables by command line.
     export BASIC_PASSWORD="password"
 ```
 
-And just run it with rack or whatever rack server you want.
+Run gh-pivotal-integration using rack (or your favorite server):
 
 ```bash
     rackup config.ru
 ```
 
-## Heroku Deploy
+## Deploy Option #2: Heroku
 
-If you have a heroku account and you want to deploy the aplication there, you should follow these steps:
+To deploy gh-pivotal-integration on a free Heroku account, simply follow these steps:
 
+```bash
+    git clone https://github.com/ThreadSuite/gh-pivotal-integration.git
+    cd gh-pivotal-integration
     heroku create --stack cedar
     heroku config:add GH_USER="myuser" GH_PASSWORD="mygithubpassword" \
                       BASIC_USER="admin" BASIC_PASSWORD="password"
     git push heroku master
+```
 
-Also, we recommend you add the ssl module (you don't want anyone peeking at your credentials!)
+Your credentials are protected since [Heroku's Piggyback SSL is now a platform feature](https://devcenter.heroku.com/changelog-items/10).
 
-    heroku addons:add piggyback_ssl
+## Pivotal Tracker Integration
 
-## Configuration at Pivotal Tracker
+Assume:
 
-Finally, to configure the applciation on pivotal tracker.
+* Your gh-pivotal-integration instance is deployed at `https://my.domain.com/` (e.g., https://random-name-1234.herokuapp.com)
 
-Supposing that:
+* Your GitHub project lives at `https://github.com/USER/REPO` (e.g., https://github.com/me/awesomeproject)
 
- * the application deployed at `https://my.domain.com/gh-pivotal/`.
- * the github project lives at `https://github.com/myaccount/reponame`
+### Configure gh-pivotal-integration as an External Tool
 
-Go to your pivotal tracker project and:
+To create Stories in Pivotal Tracker from GitHub Issues using the `Other->GitHub Issues` menu item, you need to create an External Tool Integration.
 
- 1. select `Project->Configure Integrations`
- 2. On `External Tool Integrations` select the option `Other`
- 3. Fill the form with:
-    * **Name**: Whatever you want (eg. Github Issues)
-    * **Basic Auth Username**: what you configured
-    * **Basic Auth Password**: what you configured
-    * **Base URL**: https://github.com/
-    * **Import API URL**: https://my.domain.com/gh-pivotal/issues/myaccount/reponame
+In your Pivotal Tracker project:
 
-And you're done. Start importing issues by selecting `More->The name you used`.
+1. Select the `Project->Configure Integrations` menu item
+2. Select `Other` from `Create New Integration` dropdown menu
+3. Complete the form:
+  * **Name**: GitHub Issues (or whatever you want)
+  * **Basic Auth Username**: `BASIC_USER` from above
+  * **Basic Auth Password**: `BASIC_PASSWORD` from above
+  * **Base URL**: https://github.com/
+  * **Import API URL**: https://my.domain.com/issues/USER/REPO (e.g., https://random-name-1234.herokuapp.com/issues/me/awesomeproject)
+4. Cick 'Save'
 
-### Labels support
+#### Label filtering support
 
-You can provide the `labels` parameter with a comma separated list of labels to filter the issues that have certain labels. For example:
+You can provide a `labels` parameter with a comma separated list of labels to filter the issues. For example:
  * **Import API URL**: https://my.domain.com/gh-pivotal/issues/myaccount/reponame?labels=critic,ui
 
+### Configure the Activity Web Hook
 
-## Contributing to github-issues-pivotal-integration
+To allow GitHub to close an Issue automatically when the corresponding Pivotal Tracker Story is 'accepted', you need to tell Pivotal Tracker where to send details about the Story's activity.
+
+In your Pivotal Tracker project:
+
+1. Enter the **Web Hook URL**: https://my.domain.com/issues (e.g., https://random-name-1234.herokuapp.com/issues)
+2. Click 'Save Web Hook Settings'
+
+
+# Contributing to github-issues-pivotal-integration
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -97,8 +102,6 @@ You can provide the `labels` parameter with a comma separated list of labels to 
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-## Copyright
+# Copyright
 
-Copyright (c) 2012 Zauber. See LICENSE.txt for
-further details.
-
+Copyright (c) 2012 Zauber. See LICENSE.txt for further details.

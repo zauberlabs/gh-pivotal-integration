@@ -3,11 +3,11 @@ xml.external_stories(:type => "array") do
     xml.external_story do
       xml.external_id "#{@reponame}/issues/#{issue["number"]}"
       xml.name issue["title"]
-      xml.description issue["description"]
+      xml.description issue["body"]
       xml.requested_by issue["user"]["login"]
       xml.created_at(issue["created_at"], :type => "datetime")
       xml.story_type "bug"
-      xml.estimate 0
+      xml.estimate(0, :type => "integer")
     end
   end
 end
