@@ -12,6 +12,7 @@ group :development do
   gem "simplecov", "~> 0.8.2"
   gem "rack-test"
   gem "pry"
+  gem 'dotenv'
 end
 
 group :default do
